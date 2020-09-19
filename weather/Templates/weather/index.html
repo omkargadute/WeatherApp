@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@1,600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <form method="POST" class="form">
+        {% csrf_token %}
+        {{form.name}}
+        <input class="btn" type="submit" value="Add City">
+
+        {% if message %}
+        <div class="notification {{ message_class }}">{{ message }}
+            <input class="btnd" value="Close" style="box-shadow: none;" onclick="document.getElementsByClassName('notification')[0].style.display='none'">
+        </div>
+        {% endif %}
+    </form>
+    {% for city_weather in weatherData %}
+    <div class="card">
+        <img src="http://openweathermap.org/img/w/{{ city_weather.icon }}.png" alt="image">
+        <h2>{{city_weather.city}}</h2>
+        <h3>{{city_weather.temperature}}°C</h3>
+        <h3>{{city_weather.description}}</h3>
+        <a href="{% url 'delete_city' city_weather.city %}">
+            <button class="btnd" style="width: 100px; margin-top: 10px; height: 40px;">
+                Remove
+            </button>
+        </a>
+    </div>
+    {% endfor %}
+</body>
+</html>
